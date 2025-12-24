@@ -1,0 +1,33 @@
+#define ledPin 12     // LED สีแดง
+#define RelayPin 8    // รีเลย์
+#define swipin 2      // ปุ่มกด
+
+int ledState = LOW;   // สถานะ LED / Relay
+int lastButton = HIGH;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(ledPin, OUTPUT);
+  pinMode(RelayPin, OUTPUT);
+  pinMode(swipin, INPUT_PULLUP); 
+
+  digitalWrite(ledPin, LOW);
+  digitalWrite(RelayPin, LOW);
+}
+
+void loop() {
+  int buttonState = digitalRead(swipin);
+
+  
+  if (buttonState == LOW && lastButton == HIGH) {
+    ledState = !ledState;             
+    digitalWrite(ledPin, ledState);
+    digitalWrite(RelayPin, ledState);
+
+    Serial.println(ledState ? "ON" : "OFF");
+    delay(200); 
+  }
+
+  lastButton = buttonState;
+}
